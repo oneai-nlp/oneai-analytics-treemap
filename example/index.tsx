@@ -1,7 +1,7 @@
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 import { AnalyticsTreemap } from '../src';
-import { clusters } from './example-clsuters';
+import { clusters } from './example-clusters';
 
 const App = () => {
   return (
