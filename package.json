@@ -3,6 +3,10 @@
   "name": "oneai-analytics-treemap",
   "author": "One AI",
   "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/One-AI-Team/oneai-analytics-treemap"
+  },
   "module": "dist/oneai-analytics-treemap.esm.js",
   "main": "dist/index.js",
   "typings": "dist/index.d.ts",
