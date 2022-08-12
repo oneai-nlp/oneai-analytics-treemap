@@ -102,7 +102,7 @@ const Tree = ({ height, width, data, level, setFather }: any) => {
     return d.data.phrases === undefined || d.data?.phrases.length === 0
       ? ''
       : `
-        <div style="padding: 20px 10px; background: #1D1C27; color: white; font-size: 14px; overflow-y: auto; border-radius: 8px; font-family: 'Poppins';">
+        <div style="padding: 20px 10px; background: #1D1C27; color: white; font-size: 14px; overflow-y: auto; border-radius: 8px; font-family: 'Poppins', sans-serif;">
           <div style="padding-bottom: 16px;">
             <u style="font-size: 18px;">${
               d.data.phrases?.sort((a: any, b: any) => {
@@ -110,7 +110,7 @@ const Tree = ({ height, width, data, level, setFather }: any) => {
               })[0].text
             }</u>
           </div>
-          <div style="text-align: left; display: grid; grid-template-columns: 1fr auto; gap: 10px 20px; font-weight: 300; font-family: 'Poppins';">
+          <div style="text-align: left; display: grid; grid-template-columns: 1fr auto; gap: 10px 20px; font-weight: 300; font-family: 'Poppins', sans-serif;">
             ${d.data.phrases
               ?.sort((a: any, b: any) => {
                 return b.items_count - a.items_count;
@@ -197,7 +197,7 @@ const Tree = ({ height, width, data, level, setFather }: any) => {
     .attr('height', (d: any) => d.y1 - d.y0)
     .style('fill', (_: any) => fillColor())
     .style('font-weight', '300')
-    .style('font-family', "'Poppins'")
+    .style('font-family', "'Poppins', sans-serif")
     .style('cursor', 'pointer');
 
   const tooltip2 = d3
@@ -269,7 +269,7 @@ const Tree = ({ height, width, data, level, setFather }: any) => {
     .style('user-select', 'none')
     .style('color', 'white')
     .style('font-weight', '300')
-    .style('font-family', "'Poppins'")
+    .style('font-family', "'Poppins', sans-serif")
     .style('text-align', 'center');
 
   return (

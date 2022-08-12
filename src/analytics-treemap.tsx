@@ -351,7 +351,7 @@ const AnalyticsTreemapStyle = () => {
   return (
     <style>{`
       .OneAI__Analytics__wrapper {
-        font-family: 'Poppins' !important;
+        font-family: 'Poppins', sans-serif !important;
         font-weight: 200 !important;
         height: 100%;
         display: grid;
