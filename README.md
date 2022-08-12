@@ -22,7 +22,7 @@ See the [documentation](https://studio.oneai.com/docs?utm_source=open_source&utm
 
 ### Example
 
-See the [online example](https://studio.oneai.com/docs?utm_source=open_source&utm_medium=oneai_analytics_treemap)
+See the [online example](https://codesandbox.io/s/oneai-analytics-treemap-g3qrzn)
 
 ```typescript
 import { AnalyticsTreemap } from 'oneai-analytics-treemap';
