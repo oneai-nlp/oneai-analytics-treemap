@@ -7,7 +7,7 @@ import { useResizeDetector } from 'react-resize-detector';
 import { TreeMap } from './treemap';
 
 type AnalyticsTreemapProps = {
-  clusters: Array<Cluster> | any;
+  clusters: Array<Cluster>;
 };
 
 interface Cluster {
@@ -21,7 +21,7 @@ interface Cluster {
 interface Phrase {
   text: string;
   items_count: number;
-  phrases?: { [key: string]: number };
+  phrases?: { [key: string]: number | undefined };
 }
 
 export default function AnalyticsTreemap({ clusters }: AnalyticsTreemapProps) {
