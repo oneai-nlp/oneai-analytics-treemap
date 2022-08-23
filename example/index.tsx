@@ -5,7 +5,7 @@ import { clusters } from './example-clusters';
 
 const App = () => {
   return (
-    <div style={{ display: 'grid', minHeight: '80vh' }}>
+    <div style={{ height: '80vh' }}>
       <AnalyticsTreemap clusters={clusters} />
     </div>
   );

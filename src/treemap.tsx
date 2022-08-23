@@ -1,6 +1,6 @@
 import * as d3 from 'd3';
 import React, { useEffect, useState } from 'react';
-import { randomString } from './utils';
+import { LightenDarkenColor, randomString } from './utils';
 
 export const TreeMap = ({
   dataLabel,
@@ -55,17 +55,7 @@ const Tree = ({ height, width, data, level, setFather }: any) => {
     maxElementValue > elementsSum * 0.9
       ? 0.1 / (1 - maxElementValue / elementsSum)
       : 1;
-  let arrCounter = 0;
-  const colorPalleteBlack = [
-    '#4D4DFE',
-    '#4A4AEE',
-    '#4847E1',
-    '#4545D4',
-    '#4342C7',
-    '#4040BA',
-    '#3D3CAC',
-    '#3B3AA0',
-  ];
+  let arrCounter = 1;
 
   React.useEffect(() => {
     // Sorts array from smallest to biggest (left to right)
@@ -90,10 +80,12 @@ const Tree = ({ height, width, data, level, setFather }: any) => {
     fontSize = Math.min(fontSize, 60);
     return fontSize;
   };
+
   const fillColor = () => {
-    const res = colorPalleteBlack[arrCounter];
+    const res = LightenDarkenColor('#031f38', 10 + 5 * arrCounter);
     arrCounter += 1;
-    if (arrCounter === 8) arrCounter = 0;
+    if (arrCounter >= 17) return LightenDarkenColor('#031f38', 10 + 5 * 16);
+
     return res;
   };
 
