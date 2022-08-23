@@ -3,7 +3,7 @@ import cloneDeep from 'lodash/cloneDeep';
 import groupBy from 'lodash/groupBy';
 import isEqual from 'lodash/isEqual';
 import unescape from 'lodash/unescape';
-import { useState } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import { useResizeDetector } from 'react-resize-detector';
 import { TreeMap } from './treemap';
 import { formatJSONForLabels } from './utils';
@@ -39,6 +39,72 @@ export default function AnalyticsTreemap({ clusters }: AnalyticsTreemapProps) {
   const [chart, _setChart] = useState<any>({
     children: [],
   });
+
+  useEffect(() => {
+    fetchCategoryItems();
+    //eslint-disable-next-line
+  }, [chosenCategory, json]);
+
+  useMemo(() => {
+    let allLabels;
+    try {
+      allLabels = formatJSONForLabels(json)?.map((item: any) => item?.skill);
+    } catch (error) {
+      // handle CLUSTERING_ERROR
+      return [];
+    }
+
+    const allCategories = Array.from(new Set(allLabels.flat()));
+
+    if (allCategories.includes('origin'))
+      delete allCategories[allCategories.indexOf('origin')];
+
+    setChosenCategory(allCategories[0]);
+    setCurrentCluster({
+      clusterCount: 0,
+      clusterName: '',
+    });
+
+    let clonedJson = formatJSONForLabels(cloneDeep(json));
+
+    if (clonedJson.length >= SQUARES_LIMIT) {
+      let counter = 0;
+      for (let i = SQUARES_LIMIT; i < clonedJson?.length; i++) {
+        counter += clonedJson[i].items_count;
+      }
+      clonedJson = clonedJson.splice(0, SQUARES_LIMIT - 1);
+
+      const isOthersExists = clonedJson?.some(
+        (label: any) => label.text === 'Others'
+      );
+
+      clonedJson.push({
+        text: isOthersExists ? 'Other Values' : 'Others',
+        items_count: counter,
+        others: true,
+        position: clonedJson.length,
+      });
+      return clonedJson;
+    }
+
+    const newArray = clonedJson?.map((item: any, index: any) => {
+      return {
+        text: item.text ? item?.text : item?.cluster_phrase,
+        items_count: item.items_count,
+        position: index,
+      };
+    });
+
+    const childrenArray = {
+      children: [],
+    };
+    childrenArray.children = newArray;
+
+    if (childrenArray) {
+      setChart(childrenArray);
+    }
+    //eslint-disable-next-line
+  }, [json]);
 
   if (!json) {
     return <div>Please pass clusters array to AnalyticsTreemap</div>;
@@ -185,67 +251,6 @@ export default function AnalyticsTreemap({ clusters }: AnalyticsTreemapProps) {
     }
   }
 
-  React.useMemo(() => {
-    let allLabels;
-    try {
-      allLabels = formatJSONForLabels(json)?.map((item: any) => item?.skill);
-    } catch (error) {
-      // handle CLUSTERING_ERROR
-      return [];
-    }
-
-    const allCategories = Array.from(new Set(allLabels.flat()));
-
-    if (allCategories.includes('origin'))
-      delete allCategories[allCategories.indexOf('origin')];
-
-    setChosenCategory(allCategories[0]);
-    setCurrentCluster({
-      clusterCount: 0,
-      clusterName: '',
-    });
-
-    let clonedJson = formatJSONForLabels(cloneDeep(json));
-
-    if (clonedJson.length >= SQUARES_LIMIT) {
-      let counter = 0;
-      for (let i = SQUARES_LIMIT; i < clonedJson?.length; i++) {
-        counter += clonedJson[i].items_count;
-      }
-      clonedJson = clonedJson.splice(0, SQUARES_LIMIT - 1);
-
-      const isOthersExists = clonedJson?.some(
-        (label: any) => label.text === 'Others'
-      );
-
-      clonedJson.push({
-        text: isOthersExists ? 'Other Values' : 'Others',
-        items_count: counter,
-        others: true,
-        position: clonedJson.length,
-      });
-      return clonedJson;
-    }
-
-    const newArray = clonedJson?.map((item: any, index: any) => {
-      return {
-        text: item.text ? item?.text : item?.cluster_phrase,
-        items_count: item.items_count,
-        position: index,
-      };
-    });
-
-    const childrenArray = {
-      children: [],
-    };
-    childrenArray.children = newArray;
-
-    if (childrenArray) {
-      setChart(childrenArray);
-    }
-    //eslint-disable-next-line
-  }, [json]);
-
   function setFather(itemName: any) {
     const clonedArray = cloneDeep(json);
 
@@ -314,11 +319,6 @@ export default function AnalyticsTreemap({ clusters }: AnalyticsTreemapProps) {
       });
     }
   }
-
-  React.useEffect(() => {
-    fetchCategoryItems();
-    //eslint-disable-next-line
-  }, [chosenCategory, json]);
 
   console.debug('[OneAI AnalyticsTreemap] currentCluster:', currentCluster);
   return (

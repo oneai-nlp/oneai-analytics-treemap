@@ -197,7 +197,7 @@ export function randomString(length: number) {
 
 export function LightenDarkenColor(col: string, amt: number): string {
   var usePound = false;
-  if (col[0] == '#') {
+  if (col[0] === '#') {
     col = col.slice(1);
     usePound = true;
   }
